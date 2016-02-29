@@ -37,6 +37,22 @@ describe("google-spreadsheets", function() {
 			});
 		});
 	});
+	it("can load spreadsheet cells and access raw numeric values", function(done) {
+		GoogleSpreadsheets({
+			key: "0ApDvWFF4RPZBdEFucnJya1hxVG9wZzhJQWZUWkpfekE"
+		}, function(err, spreadsheet) {
+			if(err) return done(err);
+			spreadsheet.worksheets[0].cells({
+				range: "R2C1:R2C2"
+			}, function(err, result) {
+				result.cells[2][1].value.should.equal("1");
+				result.cells[2][2].value.should.equal("5");
+				result.cells[2][1].numericValue.should.equal("1.0");
+				result.cells[2][2].numericValue.should.equal("5.0");
+				done();
+			});
+		});
+	});
 	it("can retrieve spreadsheet row which conforms to query", function(done) {
 		GoogleSpreadsheets({
 			key: "0ApDvWFF4RPZBdEFucnJya1hxVG9wZzhJQWZUWkpfekE"
